@@ -1,12 +1,8 @@
 view: stations {
   sql_table_name: noaa_thesis.stations ;;
 
-  dimension: begin {
-    type: string
-    sql: ${TABLE}.begin ;;
-  }
 
-  dimension: call {
+  dimension: call_sign {
     type: string
     sql: ${TABLE}.call ;;
   }
@@ -17,22 +13,32 @@ view: stations {
     sql: ${TABLE}.country ;;
   }
 
-  dimension: elev {
+  dimension: elevation {
     type: string
     sql: ${TABLE}.elev ;;
+    label: "Elevation (m)"
   }
 
-  dimension: end {
-    type: string
+  dimension_group: begin {
+    type: time
+    datatype: yyyymmdd
+    timeframes: [year, month, month_name, raw]
+    sql: ${TABLE}.begin ;;
+  }
+
+  dimension_group: end {
+    type: time
+    datatype: yyyymmdd
+    timeframes: [year, month, month_name, raw]
     sql: ${TABLE}.`end` ;;
   }
 
-  dimension: lat {
+  dimension: latitutde {
     type: number
     sql: ${TABLE}.lat ;;
   }
 
-  dimension: lon {
+  dimension: longitude {
     type: number
     sql: ${TABLE}.lon ;;
   }

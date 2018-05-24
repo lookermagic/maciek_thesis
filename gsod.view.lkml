@@ -1,5 +1,13 @@
-view: gsod2014 {
-  sql_table_name: noaa_thesis.gsod2014 ;;
+view: gsod {
+  derived_table: {
+    sql: select * from noaa_thesis.gsod2014
+      union all select * from noaa_thesis.gsod2015
+      union all select * from noaa_thesis.gsod2016
+      union all select * from noaa_thesis.gsod2017
+      union all select * from noaa_thesis.gsod2018
+    ;;
+    sql_trigger_value: select 1 ;;
+  }
 
   dimension: count_dewp {
     type: number

@@ -18,3 +18,13 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 #   }
 # }
 explore: stations {}
+
+explore: tornado_reports {}
+
+explore: gsod {
+  join: stations {
+    type: left_outer
+    sql_on: ${gsod.wban} = ${stations.wban} ;;
+    relationship: many_to_one
+  }
+}
