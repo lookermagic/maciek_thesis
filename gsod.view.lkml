@@ -10,189 +10,202 @@ view: gsod {
   }
 
   dimension: count_dewp {
+    hidden: yes
     type: number
     sql: ${TABLE}.count_dewp ;;
   }
 
   dimension: count_slp {
+    hidden: yes
     type: number
     sql: ${TABLE}.count_slp ;;
   }
 
   dimension: count_stp {
+    hidden: yes
     type: number
     sql: ${TABLE}.count_stp ;;
   }
 
   dimension: count_temp {
+    hidden: yes
     type: number
     sql: ${TABLE}.count_temp ;;
   }
 
   dimension: count_visib {
+    hidden: yes
     type: number
     sql: ${TABLE}.count_visib ;;
   }
 
   dimension: count_wdsp {
+    hidden: yes
     type: string
     sql: ${TABLE}.count_wdsp ;;
   }
 
-  dimension: da {
-    type: string
-    sql: ${TABLE}.da ;;
-    hidden: yes
-  }
-
-  dimension: dewp {
+  dimension: dewpoint {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.dewp ;;
-  }
+    sql: CASE WHEN ${TABLE}.dewp = 9999.9 THEN NULL ELSE ${TABLE}.dewp END ;;
+    }
 
   dimension: flag_max {
+    hidden: yes
     type: string
     sql: ${TABLE}.flag_max ;;
   }
 
   dimension: flag_min {
+    hidden: yes
     type: string
     sql: ${TABLE}.flag_min ;;
   }
 
   dimension: flag_prcp {
+    hidden: yes
     type: string
     sql: ${TABLE}.flag_prcp ;;
   }
 
   dimension: fog {
-    type: string
-    sql: ${TABLE}.fog ;;
+    type: yesno
+    sql: ${TABLE}.fog = '1' ;;
   }
 
-  dimension: gust {
+  dimension: max_wind_gust {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.gust ;;
-  }
+    sql: CASE WHEN ${TABLE}.gust = 999.9 THEN NULL ELSE ${TABLE}.gust END ;;
+    }
 
   dimension: hail {
-    type: string
-    sql: ${TABLE}.hail ;;
+    type: yesno
+    sql: ${TABLE}.hail = '1' ;;
   }
 
-  dimension: max {
+  dimension: temperature_max {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.max ;;
+    sql: CASE WHEN ${TABLE}.max = 9999.9 THEN NULL ELSE ${TABLE}.max END ;;
   }
 
-  dimension: min {
+  dimension: temperature_min {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.min ;;
-  }
+    sql: CASE WHEN ${TABLE}.min = 9999.9 THEN NULL ELSE ${TABLE}.min END ;;
+    }
 
-  dimension: mo {
+  dimension: max_windspeed {
+    view_label: "observed values"
     type: string
-    sql: ${TABLE}.mo ;;
-    hidden: yes
-  }
+    sql: CASE WHEN ${TABLE}.mxpsd = 999.9 THEN NULL ELSE ${TABLE}.mxpsd END ;;
+    }
 
-  dimension: mxpsd {
-    type: string
-    sql: ${TABLE}.mxpsd ;;
-  }
-
-  dimension: prcp {
+  dimension: precipitation {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.prcp ;;
+    sql: CASE WHEN ${TABLE}.prcp = 99.99 THEN NULL ELSE ${TABLE}.prcp END ;;
   }
 
   dimension: rain_drizzle {
-    type: string
-    sql: ${TABLE}.rain_drizzle ;;
+    type: yesno
+    sql: ${TABLE}.rain_drizzle = '1' ;;
   }
 
-  dimension: slp {
+  dimension: sea_level_pressure {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.slp ;;
-  }
+    sql: CASE WHEN ${TABLE}.slp = 9999.9 THEN NULL ELSE ${TABLE}.slp END ;;
+    }
 
-  dimension: sndp {
+  dimension: snow_depth {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.sndp ;;
-  }
+    sql: CASE WHEN ${TABLE}.sndp = 999.9 THEN NULL ELSE ${TABLE}.sndp END ;;
+    }
 
   dimension: snow_ice_pellets {
-    type: string
-    sql: ${TABLE}.snow_ice_pellets ;;
+    type: yesno
+    sql: ${TABLE}.snow_ice_pellets = '1' ;;
   }
 
   dimension: stn {
+    hidden: yes
     type: string
     sql: ${TABLE}.stn ;;
   }
 
-  dimension: stp {
-    type: number
-    sql: ${TABLE}.stp ;;
+  dimension: station_id {
+    type: string
+    sql: CONCAT(${TABLE}.stn, '-', ${TABLE}.wban) ;;
   }
 
-  dimension: temp {
+  dimension: pressure {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.temp ;;
+    sql: CASE WHEN ${TABLE}.stp = 9999.9 THEN NULL ELSE ${TABLE}.stp END ;;
+    }
+
+  dimension: temperature {
+    view_label: "observed values"
+    type: number
+    sql: CASE WHEN ${TABLE}.temp = 9999.9 THEN NULL ELSE ${TABLE}.temp END ;;
   }
 
   dimension: thunder {
-    type: string
-    sql: ${TABLE}.thunder ;;
+    type: yesno
+    sql: ${TABLE}.thunder = '1' ;;
   }
 
   dimension: tornado_funnel_cloud {
-    type: string
-    sql: ${TABLE}.tornado_funnel_cloud ;;
+    type: yesno
+    sql: ${TABLE}.tornado_funnel_cloud = '1' ;;
   }
 
-  dimension: visib {
+  dimension: visibility {
+    view_label: "observed values"
     type: number
-    sql: ${TABLE}.visib ;;
-  }
+    sql: CASE WHEN ${TABLE}.visib = 999.9 THEN NULL ELSE ${TABLE}.visib END ;;
+    }
 
   dimension: wban {
+    hidden: yes
     type: string
     sql: ${TABLE}.wban ;;
   }
 
-  dimension: wdsp {
+  dimension: windspeed {
+    view_label: "observed values"
     type: string
-    sql: ${TABLE}.wdsp ;;
-  }
-
-  dimension: year {
-    type: string
-    sql: ${TABLE}.year ;;
-    hidden: yes
-  }
+    sql: CASE WHEN ${TABLE}.wdsp = 999.9 THEN NULL ELSE ${TABLE}.wdsp END ;;
+    }
 
   dimension_group: date {
     type: time
     datatype: yyyymmdd
-    sql: concat(${year}, ${mo}, ${da}) ;;
-    timeframes: [date, raw, year, month, day_of_month]
+    sql: cast(concat(${TABLE}.year, ${TABLE}.mo, ${TABLE}.da) AS INT64) ;;
+    timeframes: [date, year, month, day_of_month, month_name, day_of_year, week, week_of_year]
   }
   measure: count {
     type: count
     drill_fields: [detail*]
   }
 
+  measure: average_temperature {
+    label: "Average Temperature (˚F)"
+    type: average
+    sql: ${temperature} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
-      temp,
-      dewp,
-      fog,
-      gust,
-      hail,
-      prcp,
-      thunder,
-      tornado_funnel_cloud
+      stations.name,
+      stations.location,
+      average_temperature
     ]
   }
 }

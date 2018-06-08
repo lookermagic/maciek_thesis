@@ -1,7 +1,6 @@
 view: stations {
   sql_table_name: noaa_thesis.stations ;;
 
-
   dimension: call_sign {
     type: string
     sql: ${TABLE}.call ;;
@@ -15,32 +14,28 @@ view: stations {
 
   dimension: elevation {
     type: string
-    sql: ${TABLE}.elev ;;
+    sql: CAST(REGEXP_EXTRACT(${TABLE}.elev,r"[0-9+-.]+") AS FLOAT64) ;;
     label: "Elevation (m)"
   }
 
   dimension_group: begin {
     type: time
     datatype: yyyymmdd
-    timeframes: [year, month, month_name, raw]
-    sql: ${TABLE}.begin ;;
+    timeframes: [year, month, month_name, date]
+    sql: CAST(${TABLE}.begin AS INT64) ;;
   }
 
   dimension_group: end {
     type: time
     datatype: yyyymmdd
-    timeframes: [year, month, month_name, raw]
-    sql: ${TABLE}.`end` ;;
+    timeframes: [year, month, month_name, date]
+    sql: CAST(${TABLE}.`end` AS INT64) ;;
   }
 
-  dimension: latitutde {
-    type: number
-    sql: ${TABLE}.lat ;;
-  }
-
-  dimension: longitude {
-    type: number
-    sql: ${TABLE}.lon ;;
+  dimension: location {
+    type: location
+    sql_latitude: ROUND(${TABLE}.lat,1) ;;
+    sql_longitude: ROUND(${TABLE}.lon,1) ;;
   }
 
   dimension: name {
@@ -65,6 +60,40 @@ view: stations {
 
   measure: count {
     type: count
-    drill_fields: [name]
+    drill_fields: [detail*]
+  }
+
+  measure: average_elevation {
+    type: average
+    sql: ${elevation} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
+  measure: max_elevation {
+    type:  max
+    sql: ${elevation} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
+  measure: min_elevation {
+    type:  min
+    sql: ${elevation} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      name,
+      call_sign,
+      state,
+      country,
+      location,
+      elevation,
+      begin_date,
+      end_date
+    ]
   }
 }

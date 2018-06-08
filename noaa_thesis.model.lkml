@@ -17,14 +17,15 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
-explore: stations {}
+explore: stations {
+}
 
 explore: tornado_reports {}
 
 explore: gsod {
   join: stations {
     type: left_outer
-    sql_on: ${gsod.wban} = ${stations.wban} ;;
+    sql_on: ${gsod.stn} = ${stations.usaf} AND ${gsod.wban} = ${stations.wban};;
     relationship: many_to_one
   }
 }
