@@ -20,8 +20,6 @@ include: "*.dashboard.lookml"  # include all dashboards in this project
 explore: stations {
 }
 
-explore: tornado_reports {}
-
 explore: gsod {
   join: stations {
     type: left_outer
@@ -29,3 +27,5 @@ explore: gsod {
     relationship: many_to_one
   }
 }
+
+explore: hail_reports {}
