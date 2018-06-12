@@ -46,7 +46,7 @@ view: gsod {
   }
 
   dimension: dewpoint {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.dewp = 9999.9 THEN NULL ELSE ${TABLE}.dewp END ;;
     }
@@ -75,7 +75,7 @@ view: gsod {
   }
 
   dimension: max_wind_gust {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.gust = 999.9 THEN NULL ELSE ${TABLE}.gust END ;;
     }
@@ -86,25 +86,25 @@ view: gsod {
   }
 
   dimension: temperature_max {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.max = 9999.9 THEN NULL ELSE ${TABLE}.max END ;;
   }
 
   dimension: temperature_min {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.min = 9999.9 THEN NULL ELSE ${TABLE}.min END ;;
     }
 
   dimension: max_windspeed {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: string
     sql: CASE WHEN ${TABLE}.mxpsd = 999.9 THEN NULL ELSE ${TABLE}.mxpsd END ;;
     }
 
   dimension: precipitation {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.prcp = 99.99 THEN NULL ELSE ${TABLE}.prcp END ;;
   }
@@ -115,13 +115,13 @@ view: gsod {
   }
 
   dimension: sea_level_pressure {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.slp = 9999.9 THEN NULL ELSE ${TABLE}.slp END ;;
     }
 
   dimension: snow_depth {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.sndp = 999.9 THEN NULL ELSE ${TABLE}.sndp END ;;
     }
@@ -143,13 +143,13 @@ view: gsod {
   }
 
   dimension: pressure {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.stp = 9999.9 THEN NULL ELSE ${TABLE}.stp END ;;
     }
 
   dimension: temperature {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.temp = 9999.9 THEN NULL ELSE ${TABLE}.temp END ;;
   }
@@ -165,7 +165,7 @@ view: gsod {
   }
 
   dimension: visibility {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: number
     sql: CASE WHEN ${TABLE}.visib = 999.9 THEN NULL ELSE ${TABLE}.visib END ;;
     }
@@ -177,7 +177,7 @@ view: gsod {
   }
 
   dimension: windspeed {
-    view_label: "observed values"
+    view_label: "Daily observations"
     type: string
     sql: CASE WHEN ${TABLE}.wdsp = 999.9 THEN NULL ELSE ${TABLE}.wdsp END ;;
     }

@@ -12,18 +12,26 @@ view: hail_reports {
   }
 
   dimension: latitude {
+    hidden: yes
     type: number
     sql: ${TABLE}.latitude ;;
   }
 
-  dimension: location {
+  dimension: location_name{
     type: string
     sql: ${TABLE}.location ;;
   }
 
   dimension: longitude {
+    hidden: yes
     type: number
     sql: ${TABLE}.longitude ;;
+  }
+
+  dimension: location {
+    type: location
+    sql_latitude: ROUND(${latitude},1) ;;
+    sql_longitude: ROUND(${longitude},1) ;;
   }
 
   dimension: size {
@@ -36,11 +44,6 @@ view: hail_reports {
     sql: ${TABLE}.state ;;
   }
 
-  dimension: time {
-    type: string
-    sql: ${TABLE}.time ;;
-  }
-
   dimension_group: timestamp {
     type: time
     timeframes: [
@@ -49,7 +52,10 @@ view: hail_reports {
       date,
       week,
       month,
-      quarter,
+      day_of_year,
+      week_of_year,
+      month_num,
+      month_name,
       year
     ]
     sql: ${TABLE}.timestamp ;;
@@ -57,6 +63,21 @@ view: hail_reports {
 
   measure: count {
     type: count
-    drill_fields: []
+    drill_fields: [detail*]
   }
+
+  measure: average_size {
+    type: average
+    sql:  ${size} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
+  set: detail {
+    fields: [
+      timestamp_date,
+      average_size,
+    ]
+  }
+
 }

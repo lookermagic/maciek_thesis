@@ -17,18 +17,26 @@ view: tornado_reports {
   }
 
   dimension: latitude {
+    hidden: yes
     type: number
     sql: ${TABLE}.latitude ;;
   }
 
-  dimension: location {
+  dimension: location_name{
     type: string
     sql: ${TABLE}.location ;;
   }
 
   dimension: longitude {
+    hidden: yes
     type: number
     sql: ${TABLE}.longitude ;;
+  }
+
+  dimension: location {
+    type: location
+    sql_latitude: ROUND(${latitude},1) ;;
+    sql_longitude: ROUND(${longitude},1) ;;
   }
 
   dimension: state {
