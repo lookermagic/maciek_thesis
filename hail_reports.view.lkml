@@ -34,7 +34,15 @@ view: hail_reports {
     sql_longitude: ROUND(${longitude},1) ;;
   }
 
+  dimension: rough_location {
+    description: "Location to within 1˚ lat/lon"
+    type: location
+    sql_latitude: ROUND(${latitude},0) ;;
+    sql_longitude: ROUND(${longitude},0) ;;
+  }
+
   dimension: size {
+    label: "Size (1/100ths inch)"
     type: number
     sql: ${TABLE}.size ;;
   }
@@ -63,20 +71,30 @@ view: hail_reports {
 
   measure: count {
     type: count
-    drill_fields: [detail*]
+    drill_fields: [detail_average*]
   }
 
   measure: average_size {
+    label: "Average size (1/100ths inch)"
     type: average
     sql:  ${size} ;;
     value_format_name: decimal_1
     drill_fields: [detail*]
   }
 
-  set: detail {
+  set: detail_average {
     fields: [
       timestamp_date,
       average_size,
+    ]
+  }
+
+  set: detail {
+    fields: [
+      timestamp_date,
+      county,
+      state,
+      size
     ]
   }
 

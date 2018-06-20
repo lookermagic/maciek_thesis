@@ -25,6 +25,12 @@ view: stations {
     sql: CAST(${TABLE}.begin AS INT64) ;;
   }
 
+  dimension: decade_began {
+    type: tier
+    tiers: [1900,1910,1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020]
+    sql: SAFE_CAST( SUBSTR(${TABLE}.begin, 1, 4) AS INT64) ;;
+  }
+
   dimension_group: end {
     type: time
     datatype: yyyymmdd
@@ -36,11 +42,35 @@ view: stations {
     type: location
     sql_latitude: ROUND(${TABLE}.lat,1) ;;
     sql_longitude: ROUND(${TABLE}.lon,1) ;;
+    drill_fields: [detail_no_geo*]
+  }
+
+  dimension: rough_location {
+    type: location
+    sql_latitude: ROUND(${TABLE}.lat,0) ;;
+    sql_longitude: ROUND(${TABLE}.lon,0) ;;
+    drill_fields: [detail_no_geo*]
   }
 
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
+    link: {
+      label: "Search on station name"
+      url: "http://google.com/search?q={{value}}+weather+station"
+      icon_url: "http://google.com/favicon.ico"
+    }
+  }
+
+  dimension: buoy_id {
+    type: string
+    sql:  REGEXP_EXTRACT(${name}, r"BUOY ([0-9]+)") ;;
+    link: {
+      label: "buoy"
+      url: "http://www.ndbc.noaa.gov/station_page.php?station={{value}}"
+      icon_url: "https://www.wrh.noaa.gov/favicon.ico"
+    }
+
   }
 
   dimension: state {
@@ -56,6 +86,12 @@ view: stations {
   dimension: wban {
     type: string
     sql: ${TABLE}.wban ;;
+
+  }
+
+  dimension: is_buoy {
+    type: yesno
+    sql: name LIKE '%BUOY%' ;;
   }
 
   measure: count {
@@ -96,4 +132,16 @@ view: stations {
       end_date
     ]
   }
+
+  set: detail_no_geo {
+    fields: [
+      name,
+      call_sign,
+      country,
+      elevation,
+      begin_date,
+      end_date
+    ]
+  }
+
 }

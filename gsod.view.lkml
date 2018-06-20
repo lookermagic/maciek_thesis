@@ -1,13 +1,5 @@
 view: gsod {
-  derived_table: {
-    sql: select * from noaa_thesis.gsod2014
-      union all select * from noaa_thesis.gsod2015
-      union all select * from noaa_thesis.gsod2016
-      union all select * from noaa_thesis.gsod2017
-      union all select * from noaa_thesis.gsod2018
-    ;;
-    sql_trigger_value: select 1 ;;
-  }
+  sql_table_name: `bigquery-public-data.noaa_gsod.gsod*` ;;
 
   dimension: count_dewp {
     hidden: yes
@@ -188,6 +180,13 @@ view: gsod {
     sql: cast(concat(${TABLE}.year, ${TABLE}.mo, ${TABLE}.da) AS INT64) ;;
     timeframes: [date, year, month, day_of_month, month_name, day_of_year, week, week_of_year]
   }
+
+  dimension: decade {
+    type: tier
+    tiers: [1900,1910,1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020]
+    sql: SAFE_CAST( ${TABLE}.year AS INT64) ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [detail*]
@@ -201,11 +200,30 @@ view: gsod {
     drill_fields: [detail*]
   }
 
+  measure: average_pressure {
+    label: "Average Pressure (Bar)"
+    type: average
+    sql: ${pressure} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
+  measure: average_dewpoint {
+    label: "Average Dewpoint (˚F)"
+    type: average
+    sql: ${dewpoint} ;;
+    value_format_name: decimal_1
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
       stations.name,
       stations.location,
-      average_temperature
+      date_month,
+      average_temperature,
+      average_pressure,
+      average_dewpoint
     ]
   }
 }
