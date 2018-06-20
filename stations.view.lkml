@@ -38,6 +38,11 @@ view: stations {
     sql: CAST(${TABLE}.`end` AS INT64) ;;
   }
 
+  dimension: years_operating {
+    type: number
+    sql: ${end_year} - ${begin_year} ;;
+  }
+
   dimension: location {
     type: location
     sql_latitude: ROUND(${TABLE}.lat,1) ;;
