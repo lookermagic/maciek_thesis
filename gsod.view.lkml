@@ -182,9 +182,50 @@ view: gsod {
   }
 
   dimension: decade {
-    type: tier
-    tiers: [1900,1910,1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020]
-    sql: SAFE_CAST( ${TABLE}.year AS INT64) ;;
+    case: {
+      when: {
+        sql: ${date_year} < 1930 ;;
+        label: "1920s"
+      }
+      when: {
+        sql: ${date_year} >= 1930 AND ${date_year} < 1940 ;;
+        label: "1930s"
+      }
+      when: {
+        sql: ${date_year} >= 1940 AND ${date_year} < 1950 ;;
+        label: "1940s"
+      }
+      when: {
+        sql: ${date_year} >= 1950 AND ${date_year} < 1960 ;;
+        label: "1950s"
+      }
+      when: {
+        sql: ${date_year} >= 1960 AND ${date_year} < 1970 ;;
+        label: "1960s"
+      }
+      when: {
+        sql: ${date_year} >= 1970 AND ${date_year} < 1980 ;;
+        label: "1970s"
+      }
+      when: {
+        sql: ${date_year} >= 1980 AND ${date_year} < 1990 ;;
+        label: "1980s"
+      }
+      when: {
+        sql: ${date_year} >= 1990 AND ${date_year} < 2000 ;;
+        label: "1990s"
+      }
+      when: {
+        sql: ${date_year} >= 2000 AND ${date_year} < 2010 ;;
+        label: "2000s"
+      }
+      when: {
+        sql: ${date_year} >= 2010 AND ${date_year} < 2020 ;;
+        label: "2010s"
+      }
+      else: "Other"
+
+    }
   }
 
   measure: count {

@@ -26,9 +26,49 @@ view: stations {
   }
 
   dimension: decade_began {
-    type: tier
-    tiers: [1900,1910,1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020]
-    sql: SAFE_CAST( SUBSTR(${TABLE}.begin, 1, 4) AS INT64) ;;
+    case: {
+      when: {
+        sql: ${begin_year} < 1930 ;;
+        label: "1920s"
+      }
+      when: {
+        sql: ${begin_year} >= 1930 AND ${begin_year} < 1940 ;;
+        label: "1930s"
+      }
+      when: {
+        sql: ${begin_year} >= 1940 AND ${begin_year} < 1950 ;;
+        label: "1940s"
+      }
+      when: {
+        sql: ${begin_year} >= 1950 AND ${begin_year} < 1960 ;;
+        label: "1950s"
+      }
+      when: {
+        sql: ${begin_year} >= 1960 AND ${begin_year} < 1970 ;;
+        label: "1960s"
+      }
+      when: {
+        sql: ${begin_year} >= 1970 AND ${begin_year} < 1980 ;;
+        label: "1970s"
+      }
+      when: {
+        sql: ${begin_year} >= 1980 AND ${begin_year} < 1990 ;;
+        label: "1980s"
+      }
+      when: {
+        sql: ${begin_year} >= 1990 AND ${begin_year} < 2000 ;;
+        label: "1990s"
+      }
+      when: {
+        sql: ${begin_year} >= 2000 AND ${begin_year} < 2010 ;;
+        label: "2000s"
+      }
+      when: {
+        sql: ${begin_year} >= 2010 AND ${begin_year} < 2020 ;;
+        label: "2010s"
+      }
+      else: "Other"
+    }
   }
 
   dimension_group: end {
@@ -55,6 +95,40 @@ view: stations {
     sql_latitude: ROUND(${TABLE}.lat,0) ;;
     sql_longitude: ROUND(${TABLE}.lon,0) ;;
     drill_fields: [detail_no_geo*]
+  }
+
+  dimension: climate_band {
+    case: {
+      when: {
+        sql:  ${TABLE}.lat > 60 ;;
+        label: "Northern Polar"
+      }
+      when: {
+        sql:  ${TABLE}.lat > 30 AND ${TABLE}.lat <= 60;;
+        label: "Northern Temperate"
+      }
+      when: {
+        sql:  ${TABLE}.lat > 10 AND ${TABLE}.lat <= 30;;
+        label: "Northern Subtropical"
+      }
+      when: {
+        sql:  ${TABLE}.lat > -10 AND ${TABLE}.lat <= 10;;
+        label: "Tropical"
+      }
+      when: {
+        sql:  ${TABLE}.lat > -30 AND ${TABLE}.lat <= -10;;
+        label: "Southern Subtropical"
+      }
+      when: {
+        sql:  ${TABLE}.lat > -60 AND ${TABLE}.lat <= -30;;
+        label: "Southern Temperate"
+      }
+      when: {
+        sql: ${TABLE}.lat <= -60 ;;
+        label: "Southern Polar"
+      }
+      else:"Unknown"
+    }
   }
 
   dimension: name {
