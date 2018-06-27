@@ -97,6 +97,11 @@ view: stations {
     drill_fields: [detail_no_geo*]
   }
 
+  dimension: latitude {
+    type: number
+    sql: ROUND(${TABLE}.lat,0) ;;
+  }
+
   dimension: climate_band {
     case: {
       when: {

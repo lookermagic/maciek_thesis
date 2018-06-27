@@ -72,6 +72,14 @@ view: gsod {
     sql: CASE WHEN ${TABLE}.gust = 999.9 THEN NULL ELSE ${TABLE}.gust END ;;
     }
 
+  dimension: severe_weather {
+    type: yesno
+    sql: ${hail}
+      OR ${snow_ice_pellets}
+      OR ${thunder}
+      OR ${tornado_funnel_cloud} ;;
+  }
+
   dimension: hail {
     type: yesno
     sql: ${TABLE}.hail = '1' ;;
